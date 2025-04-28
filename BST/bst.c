@@ -83,7 +83,7 @@ int main(void)
         inserir_nodo(&raiz, i);
     }
 
-    //gerarGraphviz(raiz); // GRAPHVIZ DA PRIMEIRA ÁRVORE
+    //gerarGraphviz(raiz); --------- GRAPHVIZ DA PRIMEIRA ÁRVORE--------------
 
     ///////////////////// Segunda parte da atividade //////////////////////////
     //Preciso preencher um vetor com números de 1 a 31 e trocar todos de lugar com rand J 
