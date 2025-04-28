@@ -83,11 +83,11 @@ int main(void)
         inserir_nodo(&raiz, i);
     }
 
-    //gerarGraphviz(raiz);
+    //gerarGraphviz(raiz); // GRAPHVIZ DA PRIMEIRA ÁRVORE
 
     ///////////////////// Segunda parte da atividade //////////////////////////
-    //Preciso preencher um vetor com números de 1 a 31 e trocar todos de lugar com rand J
-    srand((unsigned int)time(NULL));
+    //Preciso preencher um vetor com números de 1 a 31 e trocar todos de lugar com rand J 
+    srand((unsigned int)time(NULL)); //Nunca precisei castar unsigned int antes. Curioso.
 
     Arvore* raiz2 = NULL;
     int vetor[31], valor_temp, j;
