@@ -109,6 +109,15 @@ Arvore* Criar(int i)
     
 }
 
+void PosOrdem(Arvore* raiz)
+{
+    if(!raiz)
+        return;
+    PosOrdem(raiz->esquerda);
+    PosOrdem(raiz->direita);
+    printf("%d \n", raiz->valor);
+}
+
 
 int main(void) {
     srand((unsigned int)time(NULL));
@@ -116,6 +125,7 @@ int main(void) {
     Arvore* raiz = Criar(10);
 
     gerarGraphviz(raiz);
+    PosOrdem(raiz);
 
     return 0;
 }
