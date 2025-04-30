@@ -11,6 +11,75 @@ typedef struct Arvore
     struct Arvore* direita;
 } Arvore;
 
+
+/////////////////////Graphviz paranaues//////////////////////////////////
+void gerarDOT(Arvore* no, FILE* arquivo) {
+    if (no == NULL) return; 
+    
+    fprintf(arquivo, "  %d;\n", no->valor);
+    
+    if (no->esquerda != NULL) {
+        fprintf(arquivo, "  %d -> %d;\n", no->valor, no->esquerda->valor);
+    }
+    
+    if (no->direita != NULL) {
+        fprintf(arquivo, "  %d -> %d;\n", no->valor, no->direita->valor);
+    }
+    
+    gerarDOT(no->esquerda, arquivo);
+    gerarDOT(no->direita, arquivo);
+}
+
+void gerarGraphviz(Arvore* raiz) 
+{
+    FILE* dotFile = fopen("arvore.dot", "w");
+    if(dotFile == NULL)
+    {
+        printf("Erro ao criar o arquivo \n");
+        return;
+    }
+
+    //Escrevendo o cabeçalho
+    fprintf(dotFile, "digraph ArvoreBinaria {\n" );
+    fprintf(dotFile, "Nodos [shape=circle, fontname=\"Arial\"];\n");
+
+    gerarDOT(raiz, dotFile);
+
+    //Fechando o arquivo
+    fprintf(dotFile, "}\n");
+    fclose(dotFile);
+
+    //Convertendo para image (graphviz)
+    system("dot -Tpng arvore.dot -o arvore.png");
+    printf("Árvore gerada com sucesso no arquivo 'arvore.png'\n");
+
+    return;
+
+}
+//////////////////////////////////////////////////////////
+
+
+Arvore* Inserir(Arvore* raiz, int valor)
+{
+    if(raiz == NULL)
+    {
+        raiz = (Arvore*) malloc(sizeof(Arvore));
+        raiz->valor = valor;
+        raiz->esquerda = NULL;
+        raiz->direita = NULL;
+    }
+    else if(valor < raiz->valor)
+    {
+        raiz->esquerda = Inserir(raiz->esquerda, valor);
+    }
+    else 
+    {
+        raiz->direita = Inserir(raiz->direita, valor);
+    }
+
+    return raiz;
+}
+
 Arvore* Criar(int i) 
 {
 
@@ -31,7 +100,12 @@ Arvore* Criar(int i)
         valores[sorteado] = temp;
     }
 
-    
+    for(int j = 0; j < i; j++)
+    {
+        raiz = Inserir(raiz, valores[j]);
+    }
+
+    return raiz;
     
 }
 
@@ -40,6 +114,8 @@ int main(void) {
     srand((unsigned int)time(NULL));
 
     Arvore* raiz = Criar(10);
+
+    gerarGraphviz(raiz);
 
     return 0;
 }
