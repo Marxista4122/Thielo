@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/documentinhos/fielo/BST",
-      "program": "d:/documentinhos/fielo/BST/build/Debug/outDebug",
+      "cwd": "d:/documentinhos/fielo/busca",
+      "program": "d:/documentinhos/fielo/busca/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
