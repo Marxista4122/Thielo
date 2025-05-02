@@ -118,14 +118,43 @@ void PosOrdem(Arvore* raiz)
     printf("%d \n", raiz->valor);
 }
 
+int ContarNodos(Arvore* raiz)
+{
+    if(!raiz)
+        return 0;
+
+    int total = 0;
+    total++;
+    total += ContarNodos(raiz->esquerda) + ContarNodos(raiz->direita);
+
+    return total;
+}
+
+int Maior(Arvore* raiz)
+{
+    if(!raiz)
+    {
+        printf("A árvore é vazia!");
+        return INT_MIN;
+    }
+
+    while(raiz->direita)
+        raiz = raiz->direita;
+    return raiz->valor;
+}
 
 int main(void) {
     srand((unsigned int)time(NULL));
 
-    Arvore* raiz = Criar(10);
+    Arvore* raiz = Criar(40);
 
     gerarGraphviz(raiz);
-    PosOrdem(raiz);
+    //PosOrdem(raiz);
+    int quantidade_nodos = ContarNodos(raiz);
+    printf("Quantidade de nodos da árvore: %d \n", quantidade_nodos);
+
+    int maior_valor = Maior(raiz);
+    printf("Maior valor na árvore: %d \n", maior_valor);
 
     return 0;
 }
