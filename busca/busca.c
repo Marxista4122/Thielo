@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <locale.h>
 
 
 typedef struct Arvore 
@@ -143,18 +144,45 @@ int Maior(Arvore* raiz)
     return raiz->valor;
 }
 
+int Procura(Arvore* raiz, int valor1, int valor2)
+{
+    if(!raiz)
+        return 0;
+    if(raiz->valor == valor1 || raiz->valor == valor2)
+        return 1 + Procura(raiz->direita, valor1, valor2) + Procura(raiz->esquerda, valor1, valor2);
+    return Procura(raiz->direita, valor1, valor2) + Procura(raiz->esquerda, valor1, valor2);
+}
+
+void EsquerdaDireita(Arvore* nodo, int valor1, int valor2)
+{
+    int achou_esq, achou_dir;
+
+    achou_esq = Procura(nodo->esquerda, valor1, valor2);
+    achou_dir = Procura(nodo->direita,valor1, valor2);
+
+    if(achou_dir == 2 || achou_esq == 2)
+        printf("Sim");
+    else 
+        printf("Não");
+    
+    return;
+}
+
 int main(void) {
+    setlocale(LC_ALL, "");
     srand((unsigned int)time(NULL));
 
-    Arvore* raiz = Criar(40);
+    Arvore* raiz = Criar(20);
 
     gerarGraphviz(raiz);
-    //PosOrdem(raiz);
+    //PosOrdem(raiz); Comentado porque polui muito o terminal
     int quantidade_nodos = ContarNodos(raiz);
     printf("Quantidade de nodos da árvore: %d \n", quantidade_nodos);
 
     int maior_valor = Maior(raiz);
     printf("Maior valor na árvore: %d \n", maior_valor);
+
+    EsquerdaDireita(raiz, 20, 2);
 
     return 0;
 }
