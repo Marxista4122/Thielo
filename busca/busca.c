@@ -3,7 +3,15 @@
 #include <time.h>
 #include <string.h>
 #include <locale.h>
+#include <limits.h>
 
+
+typedef struct Lista 
+{
+    int valor;
+    struct Lista* antigo;
+    struct Lista* novo;
+} Lista;
 
 typedef struct Arvore 
 {
@@ -42,7 +50,7 @@ void gerarGraphviz(Arvore* raiz)
 
     //Escrevendo o cabeçalho
     fprintf(dotFile, "digraph ArvoreBinaria {\n" );
-    fprintf(dotFile, "Nodos [shape=circle, fontname=\"Arial\"];\n");
+    fprintf(dotFile, "Nodos [shape=circle, fontname=\"Arial\", style=filled, fillcolor=lightblue];\n");
 
     gerarDOT(raiz, dotFile);
 
@@ -168,11 +176,54 @@ void EsquerdaDireita(Arvore* nodo, int valor1, int valor2)
     return;
 }
 
+Lista* Converter(Arvore* raiz) 
+{
+    static Lista* ANTERIOR = NULL;
+    static Lista* TOPO = NULL;
+    //Variáveis static sobrevivem a várias chamadas da função e mantém seu valor
+    //Não sei se é a melhor abordagem, mas achei o conceito interessante
+
+    if(!raiz)
+        return TOPO;
+    
+    Converter(raiz->esquerda);
+
+    Lista* atual = (Lista*) malloc(sizeof(Lista));
+    atual->valor = raiz->valor;
+    atual->novo = NULL;
+
+
+    if(ANTERIOR)
+    {
+        ANTERIOR->novo = atual;
+    }
+    else
+    {
+        TOPO = atual;
+    }
+    atual->antigo = ANTERIOR;
+    ANTERIOR = atual;
+
+    Converter(raiz->direita);
+    
+    return TOPO;
+    
+}
+
+void PercorrerLista(Lista* lista)
+{
+    while(lista)
+    {
+        printf("Valor da lista: %d \n", lista->valor);
+        lista = lista->novo;
+    }
+}
+
 int main(void) {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, ""); //Tava dando erro na formatação do terminal e tentei ver se isso resolvia. Não resolveu
     srand((unsigned int)time(NULL));
 
-    Arvore* raiz = Criar(20);
+    Arvore* raiz = Criar(6);
 
     gerarGraphviz(raiz);
     //PosOrdem(raiz); Comentado porque polui muito o terminal
@@ -183,6 +234,9 @@ int main(void) {
     printf("Maior valor na árvore: %d \n", maior_valor);
 
     EsquerdaDireita(raiz, 20, 2);
+
+    Lista* lista = Converter(raiz);
+    PercorrerLista(lista);
 
     return 0;
 }
