@@ -182,6 +182,7 @@ Lista* Converter(Arvore* raiz)
     static Lista* TOPO = NULL;
     //Variáveis static sobrevivem a várias chamadas da função e mantém seu valor
     //Não sei se é a melhor abordagem, mas achei o conceito interessante
+    //PS.: Não é o melhor jeito. Deveria só ter passado anterior e topo como parâmetros
 
     if(!raiz)
         return TOPO;
